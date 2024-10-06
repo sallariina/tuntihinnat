@@ -12,7 +12,7 @@ def get_tuntihintanyt():
         if response.status_code == 200:
             tuntihinta = response.json()
             tuntinyt = pvm.strftime("%H.%M")
-            print(f'Tuntihinta nyt ({tuntinyt}) on {tuntihinta["price"]} snt/kWh')
+            print(f'Tuntihinta nyt (klo {tuntinyt}) on {tuntihinta["price"]} snt/kWh')
         else:
             print('Error:', response.status_code)
             return None
@@ -29,7 +29,8 @@ def get_tuntihinta(pvm: str, tunti: str):
         response = requests.get(url)
         if response.status_code == 200:
             tuntihinta = response.json()
-            return print(f'{tuntihinta["price"]} snt/kWh')
+            return tuntihinta["price"]
+            #return print(f'{tuntihinta["price"]} snt/kWh')
         else:
             return None
     except:
@@ -38,8 +39,11 @@ def get_tuntihinta(pvm: str, tunti: str):
 def get_paivanhinnat():
     tunti = 0
     pvm = datetime.now().strftime("%Y-%m-%d")
+    print(f'Sähkön hinta {datetime.now().strftime("%d.%m.%Y")}')
+    print('Tunti   Hinta')
     while tunti < 24:
-        get_tuntihinta(pvm,tunti)
+        tuntihinta = get_tuntihinta(pvm,tunti)
+        print(f'{str(tunti).zfill(2)}-{str(tunti+1).zfill(2)}   {round(tuntihinta,2)} snt/kWh')
         tunti += 1
 
     return None
