@@ -37,15 +37,19 @@ def get_tuntihinta(pvm: str, tunti: str):
         return None
 
 def get_paivanhinnat():
+    tuntihinnat = {}
     tunti = 0
     pvm = datetime.now().strftime("%Y-%m-%d")
-    print(f'Sähkön hinta {datetime.now().strftime("%d.%m.%Y")}')
-    print('Tunti   Hinta')
+    
     while tunti < 24:
         tuntihinta = get_tuntihinta(pvm,tunti)
-        print(f'{str(tunti).zfill(2)}-{str(tunti+1).zfill(2)}   {round(tuntihinta,2)} snt/kWh')
+        tuntihinnat[tunti] = tuntihinta
         tunti += 1
-
+    
+    print(f'Sähkön hinta {datetime.now().strftime("%d.%m.%Y")}')
+    print('Tunti   Hinta (snt/kWh)')
+    for tunti, hinta in tuntihinnat.items():
+        print(f"{tunti:02d}-{(tunti+1):02d}:   {'%.3f' % hinta}")
     return None
 
 if __name__ == "__main__":
